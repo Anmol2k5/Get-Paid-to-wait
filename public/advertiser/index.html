@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GPTW - Advertise to AI Developers</title>
+  <link rel="stylesheet" href="index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+  <!-- Supabase JS Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <div class="glowing-orb orb-1"></div>
+  <div class="glowing-orb orb-2"></div>
+
+  <!-- Header / Navigation -->
+  <header>
+    <div class="nav-container">
+      <div class="logo">
+        <span class="logo-icon">G</span>
+        <span class="logo-text">GPTW</span>
+      </div>
+      <nav>
+        <a href="#packages">Pricing</a>
+        <a href="#submit">Create Ad</a>
+        <a href="#status" class="nav-btn-secondary">Check Status</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container hero-container">
+      <div class="hero-content">
+        <span class="hero-badge">GPTW Ads Network</span>
+        <h1>Advertise Directly to <span class="highlight">AI Developers</span></h1>
+        <p class="hero-sub">Tasteful, context-aware sponsored slots injected directly into Claude, ChatGPT, and Gemini load/thinking indicators. Capture attention when developers are waiting.</p>
+        <div class="hero-actions">
+          <a href="#submit" class="btn btn-primary btn-large">Get Started Now</a>
+          <a href="#packages" class="btn btn-secondary btn-large">View Packages</a>
+        </div>
+      </div>
+      
+      <!-- Live Chat Preview Widget -->
+      <div class="preview-card">
+        <div class="preview-header">
+          <div class="preview-dots">
+            <span></span><span></span><span></span>
+          </div>
+          <div class="preview-title">Claude Code / Gemini Preview</div>
+        </div>
+        <div class="preview-chat-body">
+          <div class="chat-bubble user">
+            <span class="chat-author">You</span>
+            <p>How do I configure OAuth in Supabase?</p>
+          </div>
+          <div class="chat-thinking-row">
+            <span class="thinking-loader"></span>
+            <div class="thinking-ad-box">
+              <span class="ad-sponsored-badge">sponsored</span>
+              <a href="#" id="preview-ad-link" class="ad-link-text">Your sponsored text goes here...</a>
+              <span class="ad-cta-arrow">Learn more →</span>
+            </div>
+          </div>
+        </div>
+        <div class="preview-footer-note">Real-time render preview of your ad container.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing / Packages Section -->
+  <section id="packages" class="packages-section">
+    <div class="container">
+      <div class="section-header">
+        <h2>Simple, Fixed-Impression Pricing</h2>
+        <p>Choose the package that fits your campaign goals. Zero hidden fees.</p>
+      </div>
+      
+      <div class="packages-grid">
+        <!-- Package 1 -->
+        <div class="package-card" onclick="selectPackage('starter')">
+          <input type="radio" name="pkg-radio" id="pkg-starter" checked style="display:none;">
+          <div class="package-badge">Starter</div>
+          <div class="package-price">$15<span class="price-cents">.00</span></div>
+          <div class="package-impressions">10,000 Impressions</div>
+          <p class="package-desc">Perfect for testing copy or launching early stage projects.</p>
+          <ul class="package-features">
+            <li>CPM: ~$1.50</li>
+            <li>Multiple AI platforms</li>
+            <li>Custom Call-To-Action</li>
+            <li>Basic click tracking</li>
+          </ul>
+          <button class="btn btn-select" id="btn-select-starter">Select Starter</button>
+        </div>
+
+        <!-- Package 2 -->
+        <div class="package-card featured" onclick="selectPackage('growth')">
+          <input type="radio" name="pkg-radio" id="pkg-growth" style="display:none;">
+          <div class="package-tag">Most Popular</div>
+          <div class="package-badge">Growth</div>
+          <div class="package-price">$60<span class="price-cents">.00</span></div>
+          <div class="package-impressions">50,000 Impressions</div>
+          <p class="package-desc">Scale your campaign and drive consistent traffic to your developer tools.</p>
+          <ul class="package-features">
+            <li>CPM: ~$1.20 (Save 20%)</li>
+            <li>High priority serving</li>
+            <li>Detailed impression graphs</li>
+            <li>Priority developer support</li>
+          </ul>
+          <button class="btn btn-select btn-primary" id="btn-select-growth">Select Growth</button>
+        </div>
+
+        <!-- Package 3 -->
+        <div class="package-card" onclick="selectPackage('pro')">
+          <input type="radio" name="pkg-radio" id="pkg-pro" style="display:none;">
+          <div class="package-badge">Scale</div>
+          <div class="package-price">$100<span class="price-cents">.00</span></div>
+          <div class="package-impressions">100,000 Impressions</div>
+          <p class="package-desc">High-volume campaign optimized for developer acquisition.</p>
+          <ul class="package-features">
+            <li>CPM: ~$1.00 (Save 33%)</li>
+            <li>Highest priority serving</li>
+            <li>Dedicated advertiser console</li>
+            <li>Stripe invoice billing</li>
+          </ul>
+          <button class="btn btn-select" id="btn-select-pro">Select Scale</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Submission Form Section -->
+  <section id="submit" class="form-section">
+    <div class="container max-width-md">
+      <div class="section-header">
+        <h2>Submit Your Campaign</h2>
+        <p>Once submitted, you will pay securely via Stripe. Ads are reviewed and live within 24 hours.</p>
+      </div>
+
+      <form id="adForm" class="submission-form">
+        <div class="form-group-row">
+          <div class="form-group">
+            <label for="advName">Advertiser Name</label>
+            <input type="text" id="advName" required placeholder="e.g. Acme Dev Corp">
+          </div>
+          <div class="form-group">
+            <label for="advEmail">Contact Email</label>
+            <input type="email" id="advEmail" required placeholder="e.g. sponsor@acme.com">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="adText">Ad Copy (max 50 chars)</label>
+          <div class="input-counter-wrapper">
+            <input type="text" id="adText" required maxlength="50" placeholder="e.g. Issue tracking that ships fast — Linear" oninput="updateAdPreview()">
+            <span class="char-counter" id="charCount">50</span>
+          </div>
+          <p class="input-help">Keep it short, direct, and developer-friendly.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="clickUrl">Click / Destination URL</label>
+          <input type="url" id="clickUrl" required placeholder="https://yourtool.com?ref=gptw">
+        </div>
+
+        <div class="selected-package-summary">
+          <span class="summary-label">Selected Plan:</span>
+          <span class="summary-val" id="selectedPlanSummary">Growth Package ($60.00)</span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-submit" id="submitBtn">
+          Submit Campaign & Pay via Stripe
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Check Submission Status Section -->
+  <section id="status" class="status-section">
+    <div class="container max-width-sm">
+      <div class="status-card">
+        <h3>Check Campaign Status</h3>
+        <p class="status-sub">Input your Campaign/Submission ID to check real-time payment and approval status.</p>
+        <div class="status-search-box">
+          <input type="text" id="statusIdInput" placeholder="Paste your submission ID here...">
+          <button class="btn btn-primary" onclick="checkSubmissionStatus()">Track</button>
+        </div>
+        <div id="statusResult" class="status-result-display" style="display: none;">
+          <div class="result-row">
+            <span class="result-label">Name:</span>
+            <span class="result-val" id="resName">-</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Ad Copy:</span>
+            <span class="result-val" id="resCopy">-</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Payment Status:</span>
+            <span class="result-val" id="resPayment">-</span>
+          </div>
+          <div class="result-row">
+            <span class="result-label">Approval Status:</span>
+            <span class="result-val" id="resApproval">-</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container footer-container">
+      <p>&copy; 2026 GPTW Ads Network. Built for transparency and supporting developers.</p>
+      <div class="footer-links">
+        <a href="https://kickbacks.ai" target="_blank">Partner Site</a>
+        <a href="mailto:support@gptw.ai">Advertiser Support</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="index.js"></script>
+</body>
+</html>
