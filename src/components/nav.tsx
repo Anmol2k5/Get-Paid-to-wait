@@ -8,6 +8,7 @@ const navLinks = [
   { label: "How it works", href: "#how-it-works" },
   { label: "Platforms", href: "#platforms" },
   { label: "Earnings", href: "#earnings" },
+  { label: "Advertise", href: "/advertise" },
 ];
 
 export default function Nav() {

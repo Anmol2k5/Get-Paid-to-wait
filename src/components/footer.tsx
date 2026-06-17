@@ -3,7 +3,7 @@ import { HiHeart } from "react-icons/hi";
 const footerLinks = [
   {
     heading: "Product",
-    links: ["VS Code Extension", "Chrome Extension", "CLI Tool", "Pricing"],
+    links: ["VS Code Extension", "Chrome Extension", "CLI Tool", "Advertise"],
   },
   {
     heading: "Company",
@@ -45,16 +45,19 @@ export default function Footer() {
                 {group.heading}
               </h4>
               <ul className="mt-4 space-y-2">
-                {group.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-sm text-zinc-400 transition-colors hover:text-zinc-200"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
+                  {group.links.map((link) => {
+                    const href = link === "Advertise" ? "/advertise" : "#";
+                    return (
+                      <li key={link}>
+                        <a
+                          href={href}
+                          className="text-sm text-zinc-400 transition-colors hover:text-zinc-200"
+                        >
+                          {link}
+                        </a>
+                      </li>
+                    );
+                  })}
               </ul>
             </div>
           ))}
