@@ -73,6 +73,7 @@ export default function AdvertiseClient() {
   const [statusData, setStatusData] = useState<any>(null);
   const [statusLoading, setStatusLoading] = useState(false);
   const [paymentSuccess, setPaymentSuccess] = useState(false);
+  const [analyticsData, setAnalyticsData] = useState<any>(null);
 
   useEffect(() => {
     const saved = localStorage.getItem("gptw_last_submission_id");
@@ -220,6 +221,17 @@ export default function AdvertiseClient() {
       }
 
       setStatusData(data);
+
+      // Fetch analytics data
+      try {
+        const analyticsRes = await fetch(`/api/analytics?submission_id=${id}`);
+        if (analyticsRes.ok) {
+          const analytics = await analyticsRes.json();
+          setAnalyticsData(analytics);
+        }
+      } catch {
+        // Analytics fetch is best-effort
+      }
     } catch (err: any) {
       console.error("Status fetch failed:", err);
       alert(`Error: ${err.message || err}`);
@@ -648,6 +660,72 @@ export default function AdvertiseClient() {
                         : "Pending Approval"}
                   </span>
                 </div>
+              </div>
+            )}
+
+            {/* Analytics Section */}
+            {statusData && analyticsData && (
+              <div className="mt-6 space-y-4">
+                {/* Stats cards */}
+                <div className="grid grid-cols-3 gap-3">
+                  {[
+                    { label: "Impressions", value: analyticsData.totalImpressions?.toLocaleString() || "0" },
+                    { label: "Clicks", value: analyticsData.totalClicks?.toLocaleString() || "0" },
+                    { label: "CTR", value: analyticsData.ctr || "0.00%" },
+                  ].map((stat) => (
+                    <div
+                      key={stat.label}
+                      className="rounded-lg border border-white/[0.06] bg-zinc-900/50 p-3 text-center"
+                    >
+                      <div className="text-lg font-semibold tracking-tight text-zinc-100">
+                        {stat.value}
+                      </div>
+                      <div className="text-[10px] font-medium uppercase tracking-[0.12em] text-zinc-500 mt-1">
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Mini bar chart — last 7 days */}
+                {analyticsData.last7Days && analyticsData.last7Days.length > 0 && (
+                  <div className="rounded-lg border border-white/[0.06] bg-zinc-900/50 p-4">
+                    <div className="flex items-center justify-between mb-3">
+                      <span className="text-[11px] font-medium uppercase tracking-[0.12em] text-zinc-500">
+                        Last 7 Days — Impressions
+                      </span>
+                      <span className="text-[11px] text-zinc-600">
+                        {analyticsData.uniqueViewers || 0} unique viewers
+                      </span>
+                    </div>
+                    <div className="flex items-end gap-1.5 h-20">
+                      {analyticsData.last7Days.map((day: { date: string; impressions: number }) => {
+                        const maxVal = Math.max(
+                          1,
+                          ...analyticsData.last7Days.map((d: { impressions: number }) => d.impressions)
+                        );
+                        const height = day.impressions > 0 ? Math.max(8, (day.impressions / maxVal) * 100) : 4;
+                        return (
+                          <div
+                            key={day.date}
+                            className="flex-1 flex flex-col items-center gap-1"
+                          >
+                            <span className="text-[9px] text-zinc-600">
+                              {day.impressions}
+                            </span>
+                            <div
+                              className="w-full rounded-sm bg-accent/40 transition-all"
+                              style={{ height: `${height}%` }}
+                            />
+                            <span className="text-[8px] text-zinc-700">
+                              {day.date.slice(5)}
+                            </span>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
               </div>
             )}
           </div>

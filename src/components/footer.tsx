@@ -46,7 +46,12 @@ export default function Footer() {
               </h4>
               <ul className="mt-4 space-y-2">
                   {group.links.map((link) => {
-                    const href = link === "Advertise" ? "/advertise" : "#";
+                    const hrefMap: Record<string, string> = {
+                      Advertise: "/advertise",
+                      "Privacy Policy": "/privacy",
+                      "Terms of Service": "/terms",
+                    };
+                    const href = hrefMap[link] || "#";
                     return (
                       <li key={link}>
                         <a
